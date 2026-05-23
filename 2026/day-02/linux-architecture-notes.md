@@ -1,38 +1,42 @@
-Hello, Day-2
+Day-2
 
-This .md explain the architecture of Linux in short but precise manner.
+This .md explains the architecture of Linux in short but precise manner.
 
-# Linux Architecture :
-> user space : user apps like vim, docker, custom scripts, etc.
+>#  Linux Architecture :
+```
++--------------------------------------------------+
+|                 User Applications                |
+|     vim, bash, nginx, docker, chrome, etc.       | 
++--------------------------------------------------+
+|                 User Space                       |
+|  Shells, Libraries, systemd, utilities, daemons  |
++--------------------------------------------------+
+|                 System Calls                     |
+|  Interface/bridge between user space and kernel  |
++--------------------------------------------------+
+|                    Kernel                        |
+| ProcessMgmt, MemoryMgmt,filesystems, Drivers, NW |
++--------------------------------------------------+
+|                    Hardware                      |
+|   CPU | RAM | Disk | NIC | Keyboard | Devices    |
++--------------------------------------------------+
+```
 
-> shell : bash, zsh, etc
+---
+>### ***A diagram for reference of how system calls are made :***
 
-> system libs : wraps system-calls into c functions.
+<img width="600" alt="linux architecture" src="https://github.com/user-attachments/assets/c086215b-1f7a-4977-9db1-58e845c5a250" />
 
----------------------------------------
+---
 
-> ------- interface between user-space and kernel --------
 
----------------------------------------
+>### ***How processes are created and managed?***
 
-> kernel
-
-> Hardware.
-> 
-
----------------------------------------
-
-<img width="1912" height="2648" alt="linux architecture" src="https://github.com/user-attachments/assets/c086215b-1f7a-4977-9db1-58e845c5a250" />
-
----------------------------------------
-
-# How processes are created and managed : 
-
-Process Creation in Linux uses 2 syscalls. : fork() + exec()
+Process Creation in Linux uses 2 syscalls. : ***fork()*** + ***exec()***
 
 Process Creation Flow Normally : 
 
-When you type `ls` in bash, below is the workflow diagram for a Bash shell executing the #ls command:
+When you type `ls` in bash, below is the workflow diagram for a Bash shell executing the ***#ls*** command:
 ```
 +--------+
 | pid=7  |
@@ -71,7 +75,7 @@ When you type `ls` in bash, below is the workflow diagram for a Bash shell execu
     | continues (shows prompt)
     V   
 ```
-
+```
 1.The Bash shell (parent, PID 7) calls fork(), creating a child process (PID 22). 
 2.The parent (Bash) immediately calls wait(), which blocks (pauses) its execution. 
 3.The child (PID 22) calls exec() to replace itself with the ls program. 
@@ -79,12 +83,7 @@ When you type `ls` in bash, below is the workflow diagram for a Bash shell execu
 5.The child becomes a zombie. (The kernel keeps the process entry (as a zombie) to preserve the child's exit status so the parent can retrieve it later via wait())
 6.The parent's wait() call completes, reads the exit status, and cleans up the zombie entry(reaped).
 7.The parent (Bash) resumes and displays the command prompt.
+```
 
-
-
-
-- [ ] Unchecked task
-- [x] Checked task
-- [ ] Another unchecked task 
 
 
